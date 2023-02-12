@@ -1,14 +1,19 @@
 package com.evaluationtask.FamilyApp.service.validators;
 
+import com.evaluationtask.FamilyApp.exceptions.InvalidAgeException;
+import com.evaluationtask.FamilyApp.exceptions.InvalidMembersAmountException;
+import com.evaluationtask.FamilyApp.exceptions.ValidationException;
 import com.evaluationtask.FamilyApp.model.FamilyDto;
 import com.evaluationtask.FamilyApp.model.FamilyMemberDto;
 import com.evaluationtask.FamilyApp.model.enumAgeRange.FamilyMemberType;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class FamilyValidator implements IValidator<FamilyDto>{
     private final LinkedList<String> validationMessages = new LinkedList<>();
 
@@ -20,7 +25,7 @@ public class FamilyValidator implements IValidator<FamilyDto>{
             return true;
         }
         catch (ValidationException ex) {
-            throw new ValidationException(this.validationMessages.getLast());
+            throw new ValidationException (this.validationMessages.getLast(), ex);
         }
     }
     public boolean validateFamilyData(FamilyDto toValidate, int nrOfInfants, int nrOfChildren, int nrOfAdults) {
@@ -28,7 +33,7 @@ public class FamilyValidator implements IValidator<FamilyDto>{
         if (familyMemberDtos.stream()
                 .anyMatch(f -> f.getAge() < 0)) {
             this.validationMessages.add("Age cannot be a negative number");
-            throw new ValidationException(this.validationMessages.getLast());
+            throw new InvalidAgeException(this.validationMessages.getLast());
         }
         var memberTypesMap = familyMemberDtos.stream()
                 .collect(Collectors.groupingBy(this::getMemberTypeByAge));
@@ -38,7 +43,7 @@ public class FamilyValidator implements IValidator<FamilyDto>{
             memberTypesMap.getOrDefault(FamilyMemberType.ADULT, new ArrayList<>()).size() != nrOfAdults) {
 
             this.validationMessages.add("Declared number of member types in family is incorrect");
-            throw new ValidationException(this.validationMessages.getLast());
+            throw new InvalidMembersAmountException(this.validationMessages.getLast());
         }
         return true;
     }
@@ -49,8 +54,8 @@ public class FamilyValidator implements IValidator<FamilyDto>{
                 return memberType;
             }
         }
-        this.validationMessages.add("An age of one of the given family members is incorrect");
-        throw new ValidationException(validationMessages.getLast());
+        this.validationMessages.add("An age of one of the given family members is incorrect Accepted values: 0-199");
+        throw new InvalidAgeException(validationMessages.getLast());
     }
 
     @Override

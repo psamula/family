@@ -1,6 +1,6 @@
 package com.evaluationtask.FamilyApp.service.validators;
 
-import com.evaluationtask.FamilyApp.model.FamilyDto;
+import com.evaluationtask.FamilyApp.exceptions.ValidationException;
 
 import java.util.List;
 

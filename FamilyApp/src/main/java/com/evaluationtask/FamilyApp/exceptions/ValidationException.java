@@ -1,4 +1,4 @@
-package com.evaluationtask.FamilyApp.service.validators;
+package com.evaluationtask.FamilyApp.exceptions;
 
 public class ValidationException extends RuntimeException {
     public ValidationException(String message) {
