@@ -1,4 +1,4 @@
-package com.evaluationtask.FamilyApp.model;
+package com.evaluationtask.FamilyMemberApp.model;
 
 import lombok.Data;
 
