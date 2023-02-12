@@ -1,0 +1,10 @@
+version: '2.15.1'
+services:
+  dbpostgresql:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=family_password
+      - POSTGRES_USER=family_user
+      - POSTGRES_DB=family
