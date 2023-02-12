@@ -4,6 +4,6 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=family_password
-      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=family-password
+      - POSTGRES_USER=family-user
       - POSTGRES_DB=family
