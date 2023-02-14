@@ -7,12 +7,12 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Data
 @Builder
-@Table(name = "familymember")
+@Table(name="familymember")
 public class FamilyMemberEntity {
     @Id
     private Long id;
-    private Long familyId;
-    private String firstName;
-    private String lastName;
-    private Long socialNumber;
+    private Long familyid;
+    private String firstname;
+    private String lastname;
+    private Long socialnumber;
 }

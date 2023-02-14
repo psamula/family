@@ -6,5 +6,9 @@ import java.util.List;
 
 @Data
 public class FamilyDto {
-    List<FamilyMemberDto> familyMemberDtos;
+    private String familyName;
+    private Integer nrOfInfants;
+    private Integer nrOfChildren;
+    private Integer nrOfAdults;
+    private List<FamilyMemberDto> familyMemberDtos;
 }
