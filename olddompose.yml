@@ -1,9 +1,0 @@
-services:
-  dbpostgresql:
-    image: postgres:15
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=family-password
-      - POSTGRES_USER=family-user
-      - POSTGRES_DB=family
