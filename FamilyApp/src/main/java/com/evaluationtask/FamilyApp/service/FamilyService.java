@@ -1,5 +1,4 @@
 package com.evaluationtask.FamilyApp.service;
-
 import com.evaluationtask.FamilyApp.exceptions.DuplicateEntityException;
 import com.evaluationtask.FamilyApp.exceptions.InvalidInputException;
 import com.evaluationtask.FamilyApp.exceptions.ValidationException;
@@ -11,7 +10,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @RequiredArgsConstructor

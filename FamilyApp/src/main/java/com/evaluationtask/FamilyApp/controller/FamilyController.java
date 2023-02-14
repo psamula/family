@@ -6,7 +6,6 @@ import com.evaluationtask.FamilyApp.service.FamilyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,6 +16,7 @@ public class FamilyController {
     public Long createFamily(@RequestBody FamilyDto familyDto) {
         return this.familyService.createFamily(familyDto);
     }
+
     @GetMapping("/{familyId}")
     public FullFamilyDto getFamily(@PathVariable Long familyId) {
         return this.familyService.getFamily(familyId);

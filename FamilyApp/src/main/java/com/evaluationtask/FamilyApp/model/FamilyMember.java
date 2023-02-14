@@ -1,6 +1,5 @@
 package com.evaluationtask.FamilyApp.model;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data

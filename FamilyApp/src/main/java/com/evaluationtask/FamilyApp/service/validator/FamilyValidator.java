@@ -6,7 +6,6 @@ import com.evaluationtask.FamilyApp.exceptions.ValidationException;
 import com.evaluationtask.FamilyApp.model.FamilyMemberDto;
 import com.evaluationtask.FamilyApp.model.enumAgeRange.FamilyMemberType;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
