@@ -20,7 +20,7 @@ import java.util.List;
 public class RestComponentClient {
     private final RestTemplate restTemplate = new RestTemplate();
     private final String componentPort = "8081";
-    private final String componentHost = "localhost";
+    private final String componentHost = "familymember-app";
     public void postFamilyMember(FamilyMemberDto member, Long familyEntityId) {
 
         try {
