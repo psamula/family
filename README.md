@@ -36,7 +36,7 @@ Family Evaluation Task includes integration tests written with Mockito and JUnit
 ## Usage
 Once the application is running, you can access it by navigating to [localhost:8080/families](http://localhost:8080/families)
 
-### Add new Family
+### Add and get family and family members
 1. Post new family and its members to the [localhost:8080/families](http://localhost:8080/families) POST endpoint
 2. Get the family and its members by accessing [localhost:8080/families/{familyid}](http://localhost:8080/families/{familyId}) GET endpoint
 
