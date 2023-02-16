@@ -29,4 +29,9 @@ public class FamilyMemberController {
 
         return this.familyMemberService.searchFamilyMembers(familyId);
     }
+
+    @DeleteMapping("{familyId}/members")
+    public void deleteMembers(@PathVariable Long familyId) {
+        familyMemberService.deleteAllByFamilyId(familyId);
+    }
 }

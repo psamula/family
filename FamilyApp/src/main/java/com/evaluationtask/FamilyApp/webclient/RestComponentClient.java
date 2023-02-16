@@ -23,7 +23,7 @@ public class RestComponentClient {
         resources to/from the FamilyMemberApp component */
     private final RestTemplate restTemplate = new RestTemplate();
     private final String componentPort = "8081";
-    private final String componentHost = "familymember-app";
+    private final String componentHost = "dbpostgresql";
 
     /* Pass the family member data and the corresponding family id (Json and PathVariable) via REST POST endpoint
         on the side of FamilyMemberApp component */
@@ -53,6 +53,17 @@ public class RestComponentClient {
             throw new IntercomponentException(ex.getMessage(), ex.getCause());
         }
         catch (HttpServerErrorException ex) {
+            throw new FamilyMemberAppException(ex.getMessage(), ex.getCause());
+        }
+    }
+
+    public void deleteAllByFamilyId(Long id) {
+        try {
+            URI uri = URI.create(this.getComponentBaseUrl() + "/families/" + id + "/members");
+            restTemplate.delete(uri);
+        } catch (HttpClientErrorException | NullPointerException ex) {
+            throw new IntercomponentException(ex.getMessage(), ex.getCause());
+        } catch (HttpServerErrorException ex) {
             throw new FamilyMemberAppException(ex.getMessage(), ex.getCause());
         }
     }

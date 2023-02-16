@@ -1,7 +1,9 @@
 package com.evaluationtask.FamilyMemberApp.controller;
 
+import com.evaluationtask.FamilyMemberApp.model.FamilyMemberEntity;
 import com.evaluationtask.FamilyMemberApp.model.FamilyMemberTestModel;
 import com.evaluationtask.FamilyMemberApp.model.FamilyMemberDto;
+import com.evaluationtask.FamilyMemberApp.utils.TestDataProvider;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,25 +31,22 @@ class FamilyMemberControllerTest {
     private MockMvc mvc;
     @Autowired
     private ObjectMapper mapper;
+    @Autowired
+    private TestDataProvider testDataProvider;
 
     // A test method with the FamilyMemberApp global coverage
     @Transactional
     @Test
     public void shouldPostAndGetFamilyMember() throws Exception {
         // given
-        FamilyMemberDto familyMemberDto = new FamilyMemberDto();
-        familyMemberDto.setFirstName("Ralph");
-        familyMemberDto.setLastName("Fiennes");
-        familyMemberDto.setSocialNumber(123456789L);
-        Long familyId = 1L;
+        FamilyMemberDto familyMemberDto = testDataProvider.getFamilyMemberDto(2);
+        Long familyId = -19L;
+        FamilyMemberEntity expectedFamilyMemberEntity = testDataProvider.getFamilyMemberEntity(familyMemberDto, familyId);
 
         // when
         mvc.perform(post(String.format("/families/%d/member", familyId))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(String.format(
-                                "{\"firstName\":\"%s\",\"lastName\":\"%s\",\"socialNumber\":\"%d\"}",
-                                familyMemberDto.getFirstName(), familyMemberDto.getLastName(),
-                                familyMemberDto.getSocialNumber()))
+                        .content(mapper.writeValueAsString(familyMemberDto))
                         .characterEncoding("utf-8"))
                 .andExpect(status().isOk());
 
@@ -55,14 +55,11 @@ class FamilyMemberControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         String actualJson = result.getResponse().getContentAsString();
-        List<FamilyMemberTestModel> actualFamilyMembers =
-                mapper.readValue(actualJson, new TypeReference<>() {});
-        FamilyMemberTestModel actualFamilyMember = actualFamilyMembers.get(0);
+        List<FamilyMemberEntity> actualFamilyEntities = Arrays.stream(mapper.readValue(actualJson, FamilyMemberEntity[].class)).toList();
+        FamilyMemberEntity actualFamilyMemberEntity = actualFamilyEntities.get(0);
+
 
         // then
-        assertThat(actualFamilyMember.getFirstname()).isEqualTo(familyMemberDto.getFirstName());
-        assertThat(actualFamilyMember.getLastname()).isEqualTo(familyMemberDto.getLastName());
-        assertThat(actualFamilyMember.getSocialnumber()).isEqualTo(familyMemberDto.getSocialNumber());
-        assertThat(actualFamilyMember.getFamilyid()).isEqualTo(familyId);
+        assertThat(expectedFamilyMemberEntity).isEqualTo(actualFamilyMemberEntity);
     }
 }

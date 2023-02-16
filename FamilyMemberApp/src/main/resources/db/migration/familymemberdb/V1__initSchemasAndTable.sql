@@ -6,6 +6,7 @@ familyid int,   /* familyId as introduction of relationship between family and f
                     microservices' problem */
 firstname varchar,
 lastname varchar,
+age int,
 socialnumber int unique
 );
 CREATE INDEX idx_familyid ON FamilyMemberDB.FamilyMember(familyid);

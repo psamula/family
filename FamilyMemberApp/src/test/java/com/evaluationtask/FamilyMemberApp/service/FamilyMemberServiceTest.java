@@ -4,6 +4,7 @@ import com.evaluationtask.FamilyMemberApp.exceptions.DuplicateEntityException;
 import com.evaluationtask.FamilyMemberApp.model.FamilyMemberDto;
 import com.evaluationtask.FamilyMemberApp.model.FamilyMemberEntity;
 import com.evaluationtask.FamilyMemberApp.repository.FamilyMemberRepository;
+import com.evaluationtask.FamilyMemberApp.utils.TestDataProvider;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,48 +22,35 @@ public class FamilyMemberServiceTest {
 
     @Autowired
     private FamilyMemberRepository familyMemberRepository;
+    @Autowired
+    private TestDataProvider testDataProvider;
 
     @Transactional
     @Test
     public void shouldSuccessfullyCreateFamilyMember() {
         // given
-        FamilyMemberDto familyMemberDto = new FamilyMemberDto();
-        familyMemberDto.setFirstName("Leo");
-        familyMemberDto.setLastName("Messi");
-        familyMemberDto.setSocialNumber(123456789L);
-
+        FamilyMemberDto familyMemberDto = testDataProvider.getFamilyMemberDto(23);
         Long familyId = -123L;
+        FamilyMemberEntity expectedFamilyMemberEntity = testDataProvider.getFamilyMemberEntity(familyMemberDto, familyId);
 
         // when
         familyMemberService.createFamilyMember(familyMemberDto, familyId);
+        List<FamilyMemberEntity> familyMembers = familyMemberRepository.findAllByFamilyid(familyId);
+        FamilyMemberEntity actualFamilyMemberEntity = familyMembers.get(0);
 
         // then
-        List<FamilyMemberEntity> familyMembers = familyMemberRepository.findAllByFamilyid(familyId);
         assertThat(familyMembers).hasSize(1);
-
-        FamilyMemberEntity familyMemberEntity = familyMembers.get(0);
-        assertThat(familyMemberEntity.getFamilyid()).isEqualTo(familyId);
-        assertThat(familyMemberEntity.getFirstname()).isEqualTo(familyMemberDto.getFirstName());
-        assertThat(familyMemberEntity.getLastname()).isEqualTo(familyMemberDto.getLastName());
-        assertThat(familyMemberEntity.getSocialnumber()).isEqualTo(familyMemberDto.getSocialNumber());
+        assertThat(actualFamilyMemberEntity).isEqualTo(expectedFamilyMemberEntity);
     }
 
     @Transactional
     @Test
     public void shouldThrowDuplicateEntityException_whenPassedADuplicate() {
         // given
-        FamilyMemberDto familyMemberDto1 = new FamilyMemberDto();
-        familyMemberDto1.setFirstName("Patrick");
-        familyMemberDto1.setLastName("Bateman");
-        familyMemberDto1.setSocialNumber(123456789L);
-
-        FamilyMemberDto familyMemberDto2 = new FamilyMemberDto();
-        familyMemberDto2.setFirstName("Patrick");
-        familyMemberDto2.setLastName("Bateman");
-        familyMemberDto2.setSocialNumber(123456789L);
+        FamilyMemberDto familyMemberDto1 = testDataProvider.getFamilyMemberDto(23);
+        FamilyMemberDto familyMemberDto2 = testDataProvider.getFamilyMemberDto(23);
 
         Long familyId = -123L;
-
         familyMemberService.createFamilyMember(familyMemberDto1, familyId);
 
         // when
@@ -78,38 +66,27 @@ public class FamilyMemberServiceTest {
     @Test
     public void shouldSuccessfullySearchFamilyMembers() {
         // given
-        FamilyMemberDto familyMemberDto1 = new FamilyMemberDto();
-        familyMemberDto1.setFirstName("White");
-        familyMemberDto1.setLastName("Gandalf");
-        familyMemberDto1.setSocialNumber(123456789L);
-
-        FamilyMemberDto familyMemberDto2 = new FamilyMemberDto();
-        familyMemberDto2.setFirstName("Grey");
-        familyMemberDto2.setLastName("Gandalf");
-        familyMemberDto2.setSocialNumber(987654321L);
-
         Long familyId = -123L;
 
-        familyMemberService.createFamilyMember(familyMemberDto1, familyId);
-        familyMemberService.createFamilyMember(familyMemberDto2, familyId);
+        FamilyMemberDto expectedFamilyMemberDto1 = testDataProvider.getFamilyMemberDto(24);
+        expectedFamilyMemberDto1.setSocialNumber(111111111L);
+        FamilyMemberEntity expectedFamilyMemberEntity1 = testDataProvider.getFamilyMemberEntity(expectedFamilyMemberDto1, familyId);
+        FamilyMemberDto expectedFamilyMemberDto2 = testDataProvider.getFamilyMemberDto(25);
+        expectedFamilyMemberDto2.setSocialNumber(999111555L);
+        FamilyMemberEntity expectedFamilyMemberEntity2 = testDataProvider.getFamilyMemberEntity(expectedFamilyMemberDto2, familyId);
 
         // when
+        familyMemberService.createFamilyMember(expectedFamilyMemberDto1, familyId);
+        familyMemberService.createFamilyMember(expectedFamilyMemberDto2, familyId);
         List<FamilyMemberEntity> familyMembers = familyMemberService.searchFamilyMembers(familyId);
-        FamilyMemberEntity familyMemberEntity1 = familyMembers.get(0);
-        FamilyMemberEntity familyMemberEntity2 = familyMembers.get(1);
+        FamilyMemberEntity actualFamilyMemberEntity1 = familyMembers.get(0);
+        FamilyMemberEntity actualFamilyMemberEntity2 = familyMembers.get(1);
 
         // then
         assertThat(familyMembers).hasSize(2);
 
-        assertThat(familyMemberEntity1.getFamilyid()).isEqualTo(familyId);
-        assertThat(familyMemberEntity1.getFirstname()).isEqualTo(familyMemberDto1.getFirstName());
-        assertThat(familyMemberEntity1.getLastname()).isEqualTo(familyMemberDto1.getLastName());
-        assertThat(familyMemberEntity1.getSocialnumber()).isEqualTo(familyMemberDto1.getSocialNumber());
-
-        assertThat(familyMemberEntity2.getFamilyid()).isEqualTo(familyId);
-        assertThat(familyMemberEntity2.getFirstname()).isEqualTo(familyMemberDto2.getFirstName());
-        assertThat(familyMemberEntity2.getLastname()).isEqualTo(familyMemberDto2.getLastName());
-        assertThat(familyMemberEntity2.getSocialnumber()).isEqualTo(familyMemberDto2.getSocialNumber());
+        assertThat(actualFamilyMemberEntity1).isEqualTo(expectedFamilyMemberEntity1);
+        assertThat(actualFamilyMemberEntity2).isEqualTo(expectedFamilyMemberEntity2);
     }
     @Transactional
     @Test

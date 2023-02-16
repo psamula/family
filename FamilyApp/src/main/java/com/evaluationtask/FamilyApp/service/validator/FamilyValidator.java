@@ -28,6 +28,7 @@ public class FamilyValidator implements IValidator<FamilyMemberDto> {
 
     public boolean validateFamilyData(List<FamilyMemberDto> familyMemberDtos, int nrOfInfants, int nrOfChildren,
                                       int nrOfAdults) {
+        if (familyMemberDtos == null && nrOfAdults + nrOfInfants + nrOfChildren == 0) return true;
         if (familyMemberDtos.stream()
                 .anyMatch(f -> f.getAge() < 0)) {
             this.validationMessages.add("Age cannot be a negative number");

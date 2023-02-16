@@ -7,6 +7,7 @@ import com.evaluationtask.FamilyMemberApp.repository.FamilyMemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class FamilyMemberService {
 
     /* Build the family member entity from the FamilyMemberDto provided by FamilyApp
      component and save it in the FamilyMemberDB */
+    @Transactional
     public void createFamilyMember(FamilyMemberDto familyMemberDto, Long familyId) {
         var familyMemberEntity = createFamilyMemberEntity(familyMemberDto, familyId);
         if (familyMemberRepository.existsBySocialnumber(familyMemberEntity.getSocialnumber())) {
@@ -32,6 +34,7 @@ public class FamilyMemberService {
                 .familyid(familyId)
                 .firstname(familyMemberDto.getFirstName())
                 .lastname(familyMemberDto.getLastName())
+                .age(familyMemberDto.getAge())
                 .socialnumber(familyMemberDto.getSocialNumber())
                 .build();
     }
@@ -43,5 +46,9 @@ public class FamilyMemberService {
             throw new EntityNotFoundException(String.format("There are no members of family of id %d", familyId));
         }
         return familyMemberEntities;
+    }
+
+    public void deleteAllByFamilyId(Long familyId) {
+        this.familyMemberRepository.deleteByFamilyId(familyId);
     }
 }
