@@ -23,7 +23,7 @@ public class RestComponentClient {
         resources to/from the FamilyMemberApp component */
     private final RestTemplate restTemplate = new RestTemplate();
     private final String componentPort = "8081";
-    private final String componentHost = "dbpostgresql";
+    private final String componentHost = "familymember-app";
 
     /* Pass the family member data and the corresponding family id (Json and PathVariable) via REST POST endpoint
         on the side of FamilyMemberApp component */

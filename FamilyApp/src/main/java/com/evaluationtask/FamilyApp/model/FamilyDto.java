@@ -1,7 +1,6 @@
 package com.evaluationtask.FamilyApp.model;
 
 import lombok.Data;
-import org.yaml.snakeyaml.util.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;

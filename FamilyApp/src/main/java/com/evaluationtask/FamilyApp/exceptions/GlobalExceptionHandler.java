@@ -1,12 +1,12 @@
 package com.evaluationtask.FamilyApp.exceptions;
 
-import com.evaluationtask.FamilyApp.exceptions.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpServerErrorException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -61,6 +61,22 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(PSQLException.class)
     public ResponseEntity<ErrorResponse> handlePSQLException(PSQLException ex) {
+        ErrorResponse error = new ErrorResponse();
+        var httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        error.setErrorCode(httpStatus.value());
+        error.setMessage(ex.getMessage());
+        return new ResponseEntity<>(error, httpStatus);
+    }
+    @ExceptionHandler(HttpServerErrorException.class)
+    public ResponseEntity<ErrorResponse> handleInternalException(HttpServerErrorException ex) {
+        ErrorResponse error = new ErrorResponse();
+        var httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        error.setErrorCode(httpStatus.value());
+        error.setMessage(ex.getMessage());
+        return new ResponseEntity<>(error, httpStatus);
+    }
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex) {
         ErrorResponse error = new ErrorResponse();
         var httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         error.setErrorCode(httpStatus.value());

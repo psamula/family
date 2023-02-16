@@ -22,8 +22,8 @@ public class FamilyService {
 
     @Transactional
     public Long createFamily(FamilyDto familyDto) {
+        Long familyIdToDelete = 0L;
         try {
-
             // Extract the family data to separate variables and validate them
             String familyName = familyDto.getFamilyName();
             int nrOfInfants = familyDto.getNrOfInfants();
@@ -36,6 +36,7 @@ public class FamilyService {
             // Assign the ID to the new family being created
             var familyEntity = new FamilyEntity();
             var familyEntityId = familyRepository.save(familyEntity).getId();
+            familyIdToDelete = familyEntityId;
 
             // Pass (POST) the data of each family member to the FamilyMemberApp component
             familyDto.getFamilyMemberDtos()
@@ -45,15 +46,22 @@ public class FamilyService {
                 family information in database, persist it and return the family ID to the client */
             return this.saveFamilyEntity(familyEntity, familyName, nrOfInfants, nrOfChildren, nrOfAdults);
         }
-        // When the user's input is either null or invalid
+        // When the user's input is either nucll or invalid
         catch (NullPointerException | ValidationException ex) {
+            restComponentClient.deleteAllByFamilyId(familyIdToDelete); /* Deletion of unwanted records on
+                                                                            the side of FamilyMemberDB */
             throw new InvalidInputException(ex.getMessage(), ex.getCause());
         }
         // When user tries to insert the same family members (assuming no person can belong to more than 1 family)
         catch (DuplicateEntityException ex) {
             /* Rethrow it in service class for the better exception organisation and
                 let it be caught by GlobalExceptionHandler */
+            restComponentClient.deleteAllByFamilyId(familyIdToDelete);
             throw new DuplicateEntityException(ex.getMessage());
+        }
+        catch (Exception ex) {
+            restComponentClient.deleteAllByFamilyId(familyIdToDelete);
+            throw new RuntimeException(ex.getMessage(), ex.getCause());
         }
     }
 

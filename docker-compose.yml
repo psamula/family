@@ -1,5 +1,13 @@
 version: '2.15.1'
 services:
+  dbpostgresql:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=family-password
+      - POSTGRES_USER=family-user
+      - POSTGRES_DB=family
   family-app:
     build:
       context: ./FamilyApp
@@ -9,6 +17,7 @@ services:
       - "8080:8080"
     depends_on:
       - dbpostgresql
+    restart: on-failure
   familymember-app:
     build:
       context: ./FamilyMemberApp
@@ -17,12 +26,5 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - family-app
-  dbpostgresql:
-    image: postgres:15
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=family-password
-      - POSTGRES_USER=family-user
-      - POSTGRES_DB=family
+      - dbpostgresql
+    restart: on-failure

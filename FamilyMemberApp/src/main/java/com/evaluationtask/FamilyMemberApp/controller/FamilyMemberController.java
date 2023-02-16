@@ -32,6 +32,7 @@ public class FamilyMemberController {
 
     @DeleteMapping("{familyId}/members")
     public void deleteMembers(@PathVariable Long familyId) {
+        if (familyId == 0) return;
         familyMemberService.deleteAllByFamilyId(familyId);
     }
 }
