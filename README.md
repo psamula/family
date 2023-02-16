@@ -29,6 +29,7 @@ Family Evaluation Task includes integration tests written with Mockito and JUnit
 2. Navigate to the project's root directory
 3. Build both of the java spring app components jar files; you can do that in 2 ways:  
   a) by running .bat file (windows): ```familymvn.bat``` 
+  
   b) by building each component's jar separately: ```mvnw clean install``` on each component's root folder
 4. Build docker-compose using the built .jar files and postgres: ```docker-compose build```
 5. Run the whole setup of family components + PostgreSQL by running ```docker-compose up```
