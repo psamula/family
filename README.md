@@ -7,18 +7,16 @@
   * [Requirements](#requirements)
 
 ## General info
-"Movie-Hub" is a RESTful Java Spring application incorporating such
-functionalities as: browsing and retrieving movies from external IMDb API,
-facilitating its users to post ratings of each movie, character, and cast
-member. Furthermore, Movie-Hub includes stateless user authentication via
-JWT.  
-It's fully integration-tested and dockerized.
+This project consists of two Java Spring app components that communicate with each other using RESTful APIs. The first component is responsible for processing both GET and POST requests from the client via createFamily and getFamily endpoints, second component is responsible for managing family members. Both components use RestTemplate to communicate with each other.
+
+The project uses Spring Data JDBC to provide a simple and consistent way to interact with the database, and Flyway for database migration management. PostgreSQL is used as the database engine. The project is built using Maven and requires Java 17.
+
+Family Evaluation Task includes integration tests written with Mockito and JUnit to ensure the proper functioning of each component.
 
 ## Technologies Used
 - Java 17
 - Spring Boot
 - Spring Data JDBC
-- Spring Security
 - PostgreSQL
 - Flyway
 - JUnit
