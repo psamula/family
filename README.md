@@ -7,7 +7,7 @@
   * [Requirements](#requirements)
 
 ## General info
-This project consists of two Java Spring app components that communicate with each other using RESTful APIs. The first component is responsible for processing both GET and POST requests from the client via createFamily and getFamily endpoints, second component is responsible for managing family members. Both components use RestTemplate to communicate with each other.
+This project consists of two Java Spring app components that communicate with each other using RESTful APIs. The first component is responsible for processing both GET and POST requests from the client via createFamily and getFamily endpoints, second component is responsible for managing family members. Both components use RestTemplate.
 
 The project uses Spring Data JDBC to provide a simple and consistent way to interact with the database, and Flyway for database migration management. PostgreSQL is used as the database engine. The project is built using Maven and requires Java 17.
 
