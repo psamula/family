@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 
+/* A configuration class which facilitates automatic creation of two different flyway_schema_history tables for
+    two different schemas located in the same database */
 @Configuration
 public class FlywayConfig {
 

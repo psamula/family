@@ -14,5 +14,5 @@ public class FamilyMemberEntity {
     private Long familyid;
     private String firstname;
     private String lastname;
-    private Long socialnumber;
+    private Long socialnumber;  // Added unique social number as effective way of dealing with duplicates
 }

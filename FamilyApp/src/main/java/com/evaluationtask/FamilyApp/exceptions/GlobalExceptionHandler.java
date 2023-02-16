@@ -1,4 +1,4 @@
-package com.evaluationtask.FamilyApp;
+package com.evaluationtask.FamilyApp.exceptions;
 
 import com.evaluationtask.FamilyApp.exceptions.*;
 import jakarta.persistence.EntityNotFoundException;

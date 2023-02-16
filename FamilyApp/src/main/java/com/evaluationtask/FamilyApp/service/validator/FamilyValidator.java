@@ -18,7 +18,6 @@ public class FamilyValidator implements IValidator<FamilyMemberDto> {
     @Override
     public boolean validate(List<FamilyMemberDto> toValidate, int nrOfInfants, int nrOfChildren, int nrOfAdults)
             throws ValidationException {
-
         try {
             this.validateFamilyData(toValidate, nrOfInfants, nrOfChildren, nrOfAdults);
             return true;
@@ -34,6 +33,7 @@ public class FamilyValidator implements IValidator<FamilyMemberDto> {
             this.validationMessages.add("Age cannot be a negative number");
             throw new InvalidAgeException(this.validationMessages.getLast());
         }
+        // Groups the family members by their types (infant, child, adult)
         var memberTypesMap = familyMemberDtos.stream()
                 .collect(Collectors.groupingBy(this::getMemberTypeByAge));
 
@@ -47,6 +47,7 @@ public class FamilyValidator implements IValidator<FamilyMemberDto> {
         return true;
     }
 
+    // Segregates the family members by their types (infant, child, adult)
     private FamilyMemberType getMemberTypeByAge(FamilyMemberDto familyMemberDto) {
         for (var memberType : FamilyMemberType.values()) {
             if (memberType.getAgeRange()

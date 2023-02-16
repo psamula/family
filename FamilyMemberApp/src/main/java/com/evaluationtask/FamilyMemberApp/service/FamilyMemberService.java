@@ -14,6 +14,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FamilyMemberService {
     private final FamilyMemberRepository familyMemberRepository;
+
+    /* Build the family member entity from the FamilyMemberDto provided by FamilyApp
+     component and save it in the FamilyMemberDB */
     public void createFamilyMember(FamilyMemberDto familyMemberDto, Long familyId) {
         var familyMemberEntity = createFamilyMemberEntity(familyMemberDto, familyId);
         if (familyMemberRepository.existsBySocialnumber(familyMemberEntity.getSocialnumber())) {
@@ -33,6 +36,7 @@ public class FamilyMemberService {
                 .build();
     }
 
+    // GET the members of the family of given id from FamilyMemberDB
     public List<FamilyMemberEntity> searchFamilyMembers(Long familyId) {
         List<FamilyMemberEntity> familyMemberEntities = familyMemberRepository.findAllByFamilyid(familyId);
         if (familyMemberEntities.isEmpty()) {
